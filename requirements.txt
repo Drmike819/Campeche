@@ -1,0 +1,11 @@
+asgiref==3.8.1
+colorama==0.4.6
+crispy-bootstrap5==2024.2
+Django==5.0.7
+django-cors-headers==4.6.0
+django-crispy-forms==2.3
+djangorestframework==3.15.2
+pillow==10.4.0
+sqlparse==0.5.1
+tzdata==2024.1
+windows-curses==2.3.3
