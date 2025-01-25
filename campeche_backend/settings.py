@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'coreapi',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -127,9 +128,17 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173/'
+    'http://localhost:5173'
 ]
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
 }
+
+AUTH_USER_MODEL = 'users.CustomUser'
+
+import os
+
+# Ruta donde se guardarán los archivos multimedia (imágenes, videos, etc.)
+MEDIA_URL = '/media/'  # La URL para acceder a los archivos multimedia
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # El directorio en el que se guardarán los archivos multimedia
