@@ -142,3 +142,13 @@ import os
 # Ruta donde se guardarán los archivos multimedia (imágenes, videos, etc.)
 MEDIA_URL = '/media/'  # La URL para acceder a los archivos multimedia
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # El directorio en el que se guardarán los archivos multimedia
+
+# Configuración de JWT
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+}
