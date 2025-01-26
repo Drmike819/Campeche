@@ -9,27 +9,33 @@ class RegisterUserSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True, required=True)
     
     class Meta:
-        model = CustomUser  # Esto utiliza el modelo de usuario personalizado
+        # modelo que utilizaremos
+        model = CustomUser
+        # campos que se utilizaran 
         fields = ['username', 'email', 'password', 'password2']
+        # indicamos que la contraseño solo se podra escribir
         extra_kwargs = {
             'password': {'write_only': True},
         }
     
+    # funcion que valida el formulario
     def validate(self, data):
         """
         Verificar que las contraseñas coincidan.
         """
+        # obtenemmos la informacion de los valores enviados y la guardamos en las variables
         password = data.get('password')
         password2 = data.get('password2')
-
+        # verificamos si las contraseñas coinciden
         if password != password2:
+            # mensaje deerror en caso de que estas no coincidan
             raise ValidationError("Las contraseñas no coinciden.")
         
         # Validar la contraseña con las validaciones del sistema
         validate_password(password)
-        
+        # retornados la informacion
         return data
-    
+    # funcion para crear un usuario
     def create(self, validated_data):
         """
         Crear el usuario con la contraseña hasheada.
@@ -43,9 +49,6 @@ class RegisterUserSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password']
         )
+        # retorna el usuario creado
         return user
     
-# Serializador para login (autenticación)
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
