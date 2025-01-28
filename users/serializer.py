@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import CustomUser
 from django.core.exceptions import ValidationError
+from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 
 # Serializador de registro
@@ -51,4 +52,22 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         )
         # retorna el usuario creado
         return user
-    
+
+
+class LoginUserSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(write_only=True, required=True)
+
+    def validate(self, data):
+        username = data.get('username')
+        password = data.get('password')
+
+        # Intentamos autenticar al usuario con las credenciales
+        user = authenticate(username=username, password=password)
+
+        if not user:
+            raise ValidationError('Credenciales inválidas')
+        
+        # Si las credenciales son válidas, devolvemos el usuario
+        data['user'] = user
+        return data
