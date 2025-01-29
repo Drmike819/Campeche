@@ -38,9 +38,9 @@ export const RegisterForm = () => {
                 });
                 // guardamos la el diccionario en setFormData
                 setFormData(initialFormData);
-            } catch (err) {
+            } catch (error) {
                 // imprimimos en consola si existe algun error
-                console.error('Error al cargar los campos del formulario', err);
+                console.error('Error al cargar los campos del formulario', error);
             }
         };
         // llamamos aa la funcion

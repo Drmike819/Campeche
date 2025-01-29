@@ -35,6 +35,15 @@ class RegisterView(generics.CreateAPIView):
 class LoginView(generics.GenericAPIView):
     permission_classes = [AllowAny]
     serializer_class = LoginUserSerializer
+    
+    def get(self, request, *args, **kwargs):
+        # Información que otorgará la API
+        fields = [
+            {"name": "username", "label": "Nombre de usuario", "type": "text", "required": True},
+            {"name": "password", "label": "Contraseña", "type": "password", "required": True},
+        ]
+        # Retorna un diccionario con los campos
+        return Response({"fields": fields})
 
     def post(self, request, *args, **kwargs):
         # Utilizamos el serializer para validar las credenciales
@@ -46,6 +55,7 @@ class LoginView(generics.GenericAPIView):
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
 
+        # Retorna los tokens junto con el usuario
         return Response({
             'access': access_token,
             'refresh': str(refresh),
