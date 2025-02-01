@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext} from "react";
 import axios from "axios";
-
+import { AuthContext } from "../../context/AuthContext";
 export const LoginForm = () => {
+    const { setUser } = useContext(AuthContext);
     const [formFields, setFormFields] = useState([]);
     const [formData, setFormData] = useState({});
     const [error, setError] = useState("");
@@ -53,9 +54,23 @@ export const LoginForm = () => {
             // Guardar tokens en localStorage
             localStorage.setItem("access_token", response.data.access);
             localStorage.setItem("refresh_token", response.data.refresh);
+            localStorage.setItem("userName", response.data.username);
+            localStorage.setItem("userEmail", response.data.email);
+            localStorage.setItem("userImage", response.data.userImage);
+            localStorage.setItem("userAddress", response.data.userAddress);
+            localStorage.setItem("UserPhone", response.data.userPhone);
 
             setSuccess("Inicio de sesión exitoso.");
             console.log("Usuario autenticado:", response.data);
+
+            setUser({
+                accessToken: response.data.access,
+                userName: response.data.username,
+                userEmail: response.data.email,
+                userImage: response.data.userImage,
+                userAddress: response.data.userAddress,
+                userPhone: response.data.userPhone,
+              });
 
             // Redirigir al usuario si es necesario
             // window.location.href = "/dashboard";

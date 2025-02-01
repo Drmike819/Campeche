@@ -59,6 +59,11 @@ class LoginView(generics.GenericAPIView):
         return Response({
             'access': access_token,
             'refresh': str(refresh),
-            'username': user.username,
-            'email': user.email,
+            'userName': user.username,
+            'userImage': user.profile_image if user.profile_image else None,  # ✅ Maneja imágenes nulas correctamente
+            'userAddress':user.address,
+            'userPhone': user.phone_number,
+            'userEmail': user.email,  # ✅ Devuelve también el email del usuario
+            'isSeller': user.is_seller,
+            'isBuyer': user.is_buyer,
         })
