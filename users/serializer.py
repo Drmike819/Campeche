@@ -53,19 +53,24 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         # retorna el usuario creado
         return user
 
-
+# serializer para inicar sesion
 class LoginUserSerializer(serializers.Serializer):
+    # definimos los campos que utilizaremos para el inicio de sesion
     username = serializers.CharField(required=True)
     password = serializers.CharField(write_only=True, required=True)
 
+    # validamos si la credenciales son correctas, con las proporcionadas por el usuario
     def validate(self, data):
+        # obtenemos los datos de los usuarios
         username = data.get('username')
         password = data.get('password')
 
         # Intentamos autenticar al usuario con las credenciales
         user = authenticate(username=username, password=password)
 
+        # si las credenciales de los usuarios no son correctas
         if not user:
+            # mensaje de error
             raise ValidationError('Credenciales inválidas')
         
         # Si las credenciales son válidas, devolvemos el usuario

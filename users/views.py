@@ -32,10 +32,14 @@ class RegisterView(generics.CreateAPIView):
         return super().post(request, *args, **kwargs)
 
 
+# vista para que el usuario inicie sesion
 class LoginView(generics.GenericAPIView):
+    # esto permite que cualquier usuario pueda accder a esta view
     permission_classes = [AllowAny]
+    # inidcamos que serializer utilizaremos para esta vista
     serializer_class = LoginUserSerializer
     
+    # si el metodo solicitado por el usuario es(GET)
     def get(self, request, *args, **kwargs):
         # Información que otorgará la API
         fields = [
@@ -45,9 +49,11 @@ class LoginView(generics.GenericAPIView):
         # Retorna un diccionario con los campos
         return Response({"fields": fields})
 
+    # si el metodo solicitado por el usuario es(POST)
     def post(self, request, *args, **kwargs):
         # Utilizamos el serializer para validar las credenciales
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data) # (data=request.data) es la informciuon enviada por el usuario
+        # verifica que los datos del usuario sean validos
         serializer.is_valid(raise_exception=True)
 
         # Si las credenciales son válidas, generamos los tokens
@@ -55,15 +61,15 @@ class LoginView(generics.GenericAPIView):
         refresh = RefreshToken.for_user(user)
         access_token = str(refresh.access_token)
 
-        # Retorna los tokens junto con el usuario
+        # Retorna los tokens junto con la informacion del usuario usuario
         return Response({
             'access': access_token,
             'refresh': str(refresh),
             'userName': user.username,
-            'userImage': user.profile_image if user.profile_image else None,  # ✅ Maneja imágenes nulas correctamente
+            'userImage': user.profile_image.url if user.profile_image else None,
             'userAddress':user.address,
             'userPhone': user.phone_number,
-            'userEmail': user.email,  # ✅ Devuelve también el email del usuario
+            'userEmail': user.email,
             'isSeller': user.is_seller,
             'isBuyer': user.is_buyer,
         })
