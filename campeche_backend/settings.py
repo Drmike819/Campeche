@@ -37,13 +37,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # permite la conexion de diferentes dominios
     'corsheaders',
+    # libreria que nos permite crear apis
     'rest_framework',
+    # perimite documentar las apis(no se esta utilizando actualmente)
     'coreapi',
+    # aplicaciones del projecto
     'users',
+    'products'
 ]
 
 MIDDLEWARE = [
+    # perimite ahcer peticiones desde otro dominio de forma segura
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -127,6 +133,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# especificamos los dominios que tienen permitido hacer peticiones
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173'
 ]
@@ -135,6 +142,7 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
 }
 
+# inidcamos que el modelo por defecto del usuario va a h¿ser el customisado
 AUTH_USER_MODEL = 'users.CustomUser'
 
 import os
@@ -146,9 +154,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # El directorio en el que se guard
 # Configuración de JWT
 from datetime import timedelta
 
+# definimos los tiempos de lo stokens
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    # no se cambia el token de refrehs cuando el usuario pide un topoken de access
     'ROTATE_REFRESH_TOKENS': False,
+    # evita utilizar un token ya utilizaso
     'BLACKLIST_AFTER_ROTATION': True,
 }

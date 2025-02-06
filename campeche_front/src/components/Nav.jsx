@@ -1,5 +1,6 @@
 import { CampecheLogo } from "./images/CampecheLogo"
-import { NavUser } from "./authentication/PerfilUser"
+import { NavUser } from "./authentication/NavPerfilUser"
+import { ListCategories } from "./products/Categories"
 export const Nav=()=>{
     return(
         <nav className="navbar navbar-expand-lg bg-body-danger">
@@ -16,7 +17,11 @@ export const Nav=()=>{
 
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+
+                        <ListCategories/>
+                        
                         <NavUser />
+                        
                     </ul>
                 </div>
 

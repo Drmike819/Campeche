@@ -13,7 +13,7 @@ export const NavUser=()=>{
                 // si esta esta logeado imprime lo soguiente
                 <li className="nav-item dropdown">
                     {/* imagen del usuario */}
-                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src={`http://127.0.0.1:8000${user.userImage}`} alt={user.userName} width="30" height="30" className="rounded-circle" />
                     </a>
                     {/* opciones que el usuario puede compartir */}

@@ -21,7 +21,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/users/', include('users.urls'))
+    path('api/users/', include('users.urls')),
+    path('api/products/', include('products.urls')),
 ]
 # Solo en modo de desarrollo, sirve los archivos multimedia.
 if settings.DEBUG:

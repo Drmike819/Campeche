@@ -5,16 +5,14 @@ from django.db import models
 class CustomUser(AbstractUser):
     # Email debe ser único
     email = models.EmailField(max_length=100, unique=True, null=False, blank=False)
-    
     # Dirección del usuario
     address = models.TextField(max_length=500, null=True, blank=True)
-    
     # Imagen de perfil
     profile_image = models.ImageField(upload_to="profile_pictures/", blank=True, null=True)
-    
     # Tipo de usuario: comprador o vendedor
     is_seller = models.BooleanField(default=False)
     is_buyer = models.BooleanField(default=True)
+    # Celular del usuario
     phone_number = models.CharField(max_length=10, blank=True, null=True)
     
     # Sobrescribimos el método __str__ para que sea más legible
