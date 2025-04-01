@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import { RegisterForm } from './components/authentication/RegisterForm';
 import { LoginForm } from './components/authentication/LoginForm';
 import { Nav } from './components/Nav';
+import { ProductForm } from './components/products/formProducts';
 function App() {
   return (
     <AuthProvider>
@@ -15,6 +16,7 @@ function App() {
           <Routes>
             <Route path="register/" element={<RegisterForm/>} />
             <Route path='login/' element={<LoginForm/>}/>
+            <Route path='newProduct/' element={<ProductForm/>}/>
           </Routes>
           
         </main>

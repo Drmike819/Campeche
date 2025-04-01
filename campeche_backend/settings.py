@@ -159,7 +159,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     # no se cambia el token de refrehs cuando el usuario pide un topoken de access
-    'ROTATE_REFRESH_TOKENS': False,
+    'ROTATE_REFRESH_TOKENS': True,
     # evita utilizar un token ya utilizaso
     'BLACKLIST_AFTER_ROTATION': True,
 }

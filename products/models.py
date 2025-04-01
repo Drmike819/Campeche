@@ -50,6 +50,14 @@ class Products(models.Model):
     ]
      # los unicos valores permintido seran los mostrados en la lista de tupla
     state = models.CharField(max_length=20, choices=STATUS_CHOICES, default='disponible')
+    
+    def save(self, *args, **kwargs):
+        if self.price <= 0:
+            raise ValueError("El precio debe ser mayor a 0")
+        if self.stock < 0:
+            raise ValueError("El stock no puede ser negativo")
+        super().save(*args, **kwargs)
+        
     # retorna el nombre del producto
     def __str__(self):
         return self.name

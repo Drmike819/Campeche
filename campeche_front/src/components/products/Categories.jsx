@@ -15,6 +15,7 @@ export const ListCategories = () =>{
                 const response = await axios.get('http://127.0.0.1:8000/api/products/categories/')
                 console.log('Categorias cargadas con exito')
                 // guardamos la informacion en setCategories()
+                console.log(response)
                 setCategories(response.data)
             } catch (error) {
                 console.error('Error al cargar las cotaegorias', error)

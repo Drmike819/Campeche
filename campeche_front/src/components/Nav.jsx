@@ -3,7 +3,7 @@ import { NavUser } from "./authentication/NavPerfilUser"
 import { ListCategories } from "./products/Categories"
 export const Nav=()=>{
     return(
-        <nav className="navbar navbar-expand-lg bg-body-danger">
+        <nav className="navbar navbar-expand-lg bg-body-danger bg-success">
             
             <div className="container-fluid">
 
