@@ -33,6 +33,7 @@ class Products(models.Model):
         ('l', 'Litros'),
         ('ml', 'Mililitros'),
         ('unidad', 'Unidad'),
+        ('li', 'libra'),
     ]
     # los unicos valores permintido seran los mostrados en la lista de tuplas
     unit_of_measure = models.CharField(max_length=10, choices=UNIT_CHOICES, default='unidad')

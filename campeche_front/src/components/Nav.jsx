@@ -5,9 +5,9 @@ export const Nav=()=>{
     return(
         <nav className="navbar navbar-expand-lg bg-body-danger bg-success">
             
-            <div className="container-fluid">
+            <div className="container">
 
-                <a href=""><CampecheLogo /></a>
+                <a href="http://localhost:5173/"><CampecheLogo /></a>
 
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" 
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 

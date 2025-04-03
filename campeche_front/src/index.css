@@ -1,0 +1,20 @@
+/* src/index.css o src/App.css */
+@font-face {
+    font-family: 'Averia Serif Libre';
+    src: url('./assets/fonts/AveriaSerifLibre-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Averia Serif Libre', sans-serif;
+    background-color: rgb(211, 211, 211) !important;
+}
+
+.container-card-product{
+    width: 200px;
+}
+
+.container-card-category-product{
+    width: 250px !important;
+}
