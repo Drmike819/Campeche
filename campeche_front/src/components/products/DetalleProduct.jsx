@@ -43,9 +43,9 @@ export const DetalleProduct = ()=>{
     //     return <div>{error}</div>
     // }
 
-    // if (!product) {
-    //     return <div>Loading...</div>;
-    // }
+    if (!product) {
+        return <div>Loading...</div>;
+    }
 
 
     // retornamos la informacion del producto especifico
