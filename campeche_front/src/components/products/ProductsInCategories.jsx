@@ -34,7 +34,7 @@ return (
       
                 {info.products.length === 0 ? (
                 // Mostrar mensaje si no hay productos
-                    <h2 className="text-center w-100">No hay productos en esta categoría</h2>
+                    <h2 className="text-center w-100 text-danger mt-5">No hay productos en esta categoría</h2>
                 ) : (
                     // Mapear los productos si existen
                     <div className="d-flex flex-wrap w-100">

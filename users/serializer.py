@@ -3,6 +3,7 @@ from .models import CustomUser
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 # Serializador de registro
 class RegisterUserSerializer(serializers.ModelSerializer):
@@ -53,26 +54,27 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         # retorna el usuario creado
         return user
 
-# serializer para inicar sesion
-class LoginUserSerializer(serializers.Serializer):
-    # definimos los campos que utilizaremos para el inicio de sesion
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(write_only=True, required=True)
 
-    # validamos si la credenciales son correctas, con las proporcionadas por el usuario
-    def validate(self, data):
-        # obtenemos los datos de los usuarios
-        username = data.get('username')
-        password = data.get('password')
+# Serializador personalizado para manejar tokens de autenticación
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
-        # Intentamos autenticar al usuario con las credenciales
-        user = authenticate(username=username, password=password)
+    # Este método verifica que el usuario inicie sesión con las credenciales correctas
+    # attrs: parametros que el usuario envia a la hora de iniciar sesion
+    def validate(self, attrs):
+        # Llamamos al método original para validar y obtener los tokens
+        data = super().validate(attrs)
 
-        # si las credenciales de los usuarios no son correctas
-        if not user:
-            # mensaje de error
-            raise ValidationError('Credenciales inválidas')
-        
-        # Si las credenciales son válidas, devolvemos el usuario
-        data['user'] = user
+        # Obtenemos el usuario que acaba de iniciar sesión
+        user = self.user
+
+        # Añadimos información adicional del usuario a la respuesta
+        data.update({
+            'userImage': user.profile_image.url,
+            'userName': user.username,
+            'userEmail': user.email,
+            'isSeller': user.is_seller,
+            'isBuyer': user.is_buyer,
+        })
+
+        # Retornamos los datos junto con los tokens y la información del usuario
         return data

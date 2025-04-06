@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     # libreria que nos permite crear apis
     'rest_framework',
+    'rest_framework_simplejwt',
     # perimite documentar las apis(no se esta utilizando actualmente)
     'coreapi',
     # aplicaciones del projecto
@@ -139,6 +140,12 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
 }
 
@@ -156,10 +163,17 @@ from datetime import timedelta
 
 # definimos los tiempos de lo stokens
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-    # no se cambia el token de refrehs cuando el usuario pide un topoken de access
-    'ROTATE_REFRESH_TOKENS': True,
-    # evita utilizar un token ya utilizaso
-    'BLACKLIST_AFTER_ROTATION': True,
+    
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
+    'SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER': timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME_LATE_USER': timedelta(days=30),
+    
+    # 'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    # 'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    # # no se cambia el token de refrehs cuando el usuario pide un topoken de access
+    # 'ROTATE_REFRESH_TOKENS': True,
+    # # evita utilizar un token ya utilizaso
+    # 'BLACKLIST_AFTER_ROTATION': True,
 }

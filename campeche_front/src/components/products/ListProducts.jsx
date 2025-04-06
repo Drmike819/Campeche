@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 // creamos la funcion principal para listar los productos
 export const ListProducts = () => {
+
+    const url = 'http://127.0.0.1:8000/api/products/List-products/'
     // variable en donde almacenaremos todos los productos y su informacion esta es una lista
     const [products, setProducts] = useState([]);
 
@@ -15,7 +17,7 @@ export const ListProducts = () => {
             try {
                 console.log('Entrando a la funcion');
                 // hacemos la peticion a la API y la amcanenamos en una variable
-                const response = await axios.get('http://127.0.0.1:8000/api/products/List-products/');
+                const response = await axios.get(`${url}`);
                 console.log('solicitud exitosa: ', response.data);
                 // guardamos la informacion obtenida
                 setProducts(response.data);

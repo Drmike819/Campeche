@@ -4,6 +4,7 @@ from .serializer import SerializerCategories, SerializerProducts, ProductSeriali
 from rest_framework.views import APIView
 from .models import Category, Products
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # Create your views here.
 
@@ -67,58 +68,76 @@ class DetailProductView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-
-
-
-
-# creamos la API para el formulario del producto     
+# creacion de la API para crear un nuevo producto
 class FormProductosView(APIView):
-    # indicamos los permisos (por el momento no require permisos)
-    permission_classes = [AllowAny]
-    # llamamos al serializador de del foprmulario de los productos
-    # serializer_class = SerializerFormProducto
     
-    # inidcamos la funcion si el metodo solicitado por el cliente es GET
+    # solo los usuraios con el token JWT pueden acceder a esta 
+    authentication_classes = [JWTAuthentication]
+    # indicamos que las personas autenticadas son los unicos que pueden acceder a esta
+    permission_classes = [IsAuthenticated]
+
+    # con el metodo get enviamos los campos del formulario para la creacion de un nuevo producto
     def get(self, request, *args, **kwargs):
-        # iniciamos una variable en donde almacenaremos la clave y el valor de las opciones previamente elegidas
+        # alamacenamos las opciones de unidad encontradas en el modelo
         unit_choices = [{'value': key, 'label': value} for key, value in Products.UNIT_CHOICES]
+        # obtenemos todas las instacias creadas del modelo categorias 
         categorias = Category.objects.all()
+        # obtenemos todos las categorias 
         opciones_categorias = [{'value': categoria.id, 'label': categoria.name} for categoria in categorias]
-        # variable en donde almacenamos los campos para el formulario, y posterior mente retornarla para la API
+
+        # campos del formulario que deseamos utilizar para la creacion de una nuevo producto
         fields = [
             {"name": "name", "label": "Nombre del producto", "type": "text", "required": True},
-            {"name": "description", "label": "Descripcion del producto", "type": "text", "required": True},
+            {"name": "description", "label": "Descripción del producto", "type": "text", "required": True},
             {"name": "price", "label": "Precio del producto", "type": "number", "step": "0.01", "required": True},
             {"name": "stock", "label": "Cantidad disponible", "type": "number", "step": "1", "required": True},
-            {"name": "unit", "label": "Unidad de medida", "type": "select", "options": unit_choices, "required": True},
-            # {"name": "unit", "label": "Categorias", "type": "multi-select", "options": opciones_categorias, "required": True},
+            {"name": "unit_of_measure", "label": "Unidad de medida", "type": "select", "options": unit_choices, "required": True},
             {"name": "images", "label": "Imágenes del producto", "type": "file", "multiple": True, "required": False},
+            {"name": "category", "label": "Categoría", "type": "select", "options": opciones_categorias, "multiple": True, "required": True},
         ]
-        # retornamos la variable fields en donde estara almacenado los campos del formulario
+        # retornamos los campos
         return Response({"fields": fields})
-    
+
+    # funcion que nos permite subir el producto a la base de datos
     def post(self, request, *args, **kwargs):
+        # obtenemos la iformacion de usuario
         user = request.user
-        if not user.is_authenticated:
-            return Response({'detail': 'La autenticacion es requerida'}, status=status.HTTP_401_UNAUTHORIZED)
-        
+        # copias la informacion del usuario
         data = request.data.copy()
+        # inidcamos que el id del usuario sera el productos del producto creado
         data['producer'] = user.id
-        
+
+        # limpieza de datos, asegura que los datos enciados sean los requeridos en la base de datos
         price = float(data.get('price', 0))
         stock = int(data.get('stock', 0))
 
+        # verifica que el precio no sea menor o igual a 0 y que el stock no sea menor a 0
         if price <= 0 or stock < 0:
+            # en caso de error retornamos un mensaje de error
             return Response({"detail": "El precio debe ser mayor a 0 y el stock no puede ser negativo"}, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = ProductSerializer(data=data)
-        if serializer.is_valid():
-            producto = serializer.save()
+        # verificamos el campo categorias y la informacion enviada en el
+        if 'category' in data:
+            try:
+                # obtenemos la informacion enviado y la volvemos una lista de categorias,
+                # cambias los valores string en valor numericos, y guardamo sla nueva lista con los valores remplazados
+                data.setlist('category', [int(cat_id) for cat_id in data.getlist('category')])
+            # si algun valor no sepuede comvertir a numerico mandamo suna VValueError
+            except ValueError:
+                # mensaje de error
+                return Response({"category": ["Formato inválido. Se espera una lista de IDs numéricos."]}, status=status.HTTP_400_BAD_REQUEST)
 
-            # Guardamos imágenes si se proporcionan
+        # serializador para verificar los datos
+        serializer = ProductSerializer(data=data)
+        # si el serializador es correcto 
+        if serializer.is_valid():
+            # guarda el nuevo producto en la base de datos
+            producto = serializer.save()
+            # las imagenes enviadas en el formulario se asocian al nuevo producto
             images = request.FILES.getlist('images')
             for image in images:
                 producto.images.create(image=image)
-
+            # mensaje de exito
             return Response({"detail": "Producto creado correctamente"}, status=status.HTTP_201_CREATED)
+        # mensaje de error
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
