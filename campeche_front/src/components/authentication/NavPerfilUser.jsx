@@ -4,7 +4,6 @@ import { AuthContext } from "../../context/AuthContext";
 
 export const NavUser = () => {
     const { user, logout } = useContext(AuthContext);
-    console.log("🧑 Usuario en NavUser:", user);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -41,7 +40,9 @@ export const NavUser = () => {
             ) : (
                 <>
                     <li className="nav-item">
-                        <Link className="nav-link" to="/login">Iniciar Sesión</Link>
+                        <Link to="/login" className="btn btn-login">
+                            LogIn
+                        </Link>
                     </li>
                     <li className="nav-item">
                         <Link className="nav-link" to="/register">Registrarse</Link>

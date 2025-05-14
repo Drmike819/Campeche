@@ -2,6 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 // importamos el contexto global
 import { AuthContext } from "../../context/AuthContext";
+import { CampecheLogo } from "../images/CampecheLogo";
+import { Link, useNavigate } from "react-router-dom";
 
 // funcion principal
 export const LoginForm = () => {
@@ -72,15 +74,22 @@ export const LoginForm = () => {
 
     // retornamos el formulario
     return (
-        <div className="container mt-5">
-            <h2>LogIn</h2>
+        <div className="ms-auto me-auto login-container h-100 bg-light p-3">
+            <div className="row mb-3">
+                <div className="col-6">
+                    <CampecheLogo width="100px" height="100px"/>
+                </div>
+                <div className="col-6">
+                    <h2 className="mt-4">LogIn</h2>
+                </div>
+            </div>
             {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
                 {formFields.map(field => (
                     <div key={field.name} className="form-floating mb-3">
                         <input
                             id={field.name}
-                            className="form-control"
+                            className="form-control bg-gray"
                             type={field.type}
                             name={field.name}
                             value={formData[field.name] || ""}
@@ -91,7 +100,12 @@ export const LoginForm = () => {
                         <label htmlFor={field.name}>{field.label}</label>
                     </div>
                 ))}
-                <button type="submit" className="btn btn-primary">LogIn</button>
+                <button type="submit" className="btn btn-primary w-100">LogIn</button>
+                <div className="d-flex justify-content-between mt-2">
+                    <Link className="text-blue text-decoration-none" to="/register">Registrarme</Link>
+                    <Link className="text-blue text-decoration-none" to="/register">Recuperar contraseña</Link>
+                </div>
+
             </form>
         </div>
     );

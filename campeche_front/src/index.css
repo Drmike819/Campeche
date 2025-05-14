@@ -11,6 +11,23 @@ body {
     background-color: rgb(211, 211, 211) !important;
 }
 
+/* login-form */
+.login-container{
+    margin-top: 8%;
+    width: 450px;
+}
+
+
+/* usuario */
+li  .btn-login{
+    background-color: wheat;
+}
+li .btn-login:hover{
+    background-color: #ff3333; /* Cambia el color al pasar el mouse */
+    color: white;
+}
+
+/* productos */
 .container-card-product{
     width: 200px;
 }
